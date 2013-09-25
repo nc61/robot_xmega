@@ -32,9 +32,9 @@ FILE usartC0_stream;
 void buf_write(buf_t* buf, char data);
 uint8_t buf_read(buf_t *buf);
 uint8_t data_in_buf(buf_t *buf);
-void usart_putc(buf_t *buf, char c);
-char usart_getc(buf_t *buf);
+void usart_putc(char c);
+char usart_getc();
 void usart_init();
-static inline void usartC0_putc(char c){usart_putc(&TXC0_buf, c);}
-static inline char usartC0_getc(){usart_getc(&RXC0_buf);}
+static inline void usartC0_putc(char c){usart_putc(c);}
+static inline char usartC0_getc(){usart_getc();}
 #endif /* USART_H_ */

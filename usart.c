@@ -33,20 +33,27 @@ uint8_t buf_read(buf_t *buf)
 
 FILE usartC0_stream = FDEV_SETUP_STREAM(usartC0_putc, usartC0_getc, _FDEV_SETUP_RW);
 
-void usart_putc(buf_t *buf, char c)
+void usart_putc(char c)
 {
 	cli();
-	buf_write((buf_t *)buf, c);
+	buf_write(&TXC0_buf, c);
 	USARTC0.CTRLA &= ~USART_DREINTLVL_gm;
 	USARTC0.CTRLA |= USART_DREINTLVL_LO_gc;	//setting this bit should cause the DRE interrupt to be triggered
 	sei();
 }
 
-char usart_getc(buf_t *buf)
+char usart_getc()
 {
 	char data;
+	volatile uint8_t empty = 1;
+	
+	while(empty)		//Just in case, wait for a new byte to come in.
+	{
+		empty = !data_in_buf(&RXC0_buf);
+	}
+	
 	cli();
-	data = buf_read((buf_t *) buf);
+	data = buf_read(&RXC0_buf);
 	sei();
 	return data;
 }

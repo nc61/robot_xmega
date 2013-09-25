@@ -16,5 +16,6 @@
 #include <avr/interrupt.h>
 #include "usart.h"
 #include "clock.h"
+#include "motors.h"
 
 #endif /* ROBOT_XMEGA_H_ */
