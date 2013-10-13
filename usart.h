@@ -35,6 +35,4 @@ uint8_t data_in_buf(buf_t *buf);
 void usart_putc(char c);
 char usart_getc();
 void usart_init();
-static inline void usartC0_putc(char c){usart_putc(c);}
-static inline char usartC0_getc(){usart_getc();}
 #endif /* USART_H_ */

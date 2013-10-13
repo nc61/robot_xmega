@@ -31,8 +31,6 @@ uint8_t buf_read(buf_t *buf)
 	else return *buf->buf_tail++;
 }
 
-FILE usartC0_stream = FDEV_SETUP_STREAM(usartC0_putc, usartC0_getc, _FDEV_SETUP_RW);
-
 void usart_putc(char c)
 {
 	cli();

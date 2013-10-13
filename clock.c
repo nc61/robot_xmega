@@ -1,5 +1,5 @@
 /*
- * clcock.c
+ * clock.c
  *
  * Created: 5/21/2012 5:28:55 PM
  *  Author: tmartin
@@ -7,7 +7,6 @@
 
 
 #include "clock.h"
-
 
 void clock_init()
 {	
