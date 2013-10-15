@@ -3,6 +3,7 @@
  *
  * Created: 10/13/2013 7:25:25 PM
  *  Author: Nick
+ *	Description: Receives serial byte, adds 1 to it, and sends it back
  */ 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -26,8 +27,8 @@ int main(void)
 {
 	clock_init();
 	usart_test_init();
-	PORTB.DIRSET = 0xF;
-	PORTB.OUTSET = 0xF1;
+	PORTB.DIRSET = 0x0F;
+	PORTB.OUTSET = 0x01;
 	sei();
 	while(1)
 	{
@@ -37,7 +38,8 @@ int main(void)
 
 ISR(USARTC0_RXC_vect)
 {
-	PORTB.OUTSET = (data & 0xFF);
+	//Output lowest nibble to port B
+	PORTB.OUTSET = (data & 0x0F);
 	data = USARTC0.DATA;
 	data = data + 1;
 	USARTC0.DATA = data;
