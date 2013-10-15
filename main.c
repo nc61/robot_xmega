@@ -22,6 +22,8 @@ int main(void)
 	usart_init();
 	TC_init();
 	sei();
+	PORTB.DIRSET = 0xF;
+	PORTB.OUT = 0xA;
 	char cmd_byte = 0;
     
 	while(1)
@@ -30,7 +32,13 @@ int main(void)
         {
 	        //read in a character from the USB buffer
 	        cmd_byte = usart_getc();
+			PORTB.OUT = (cmd_byte & 0x0F);
 			
+			//Command 'd' - Debug
+			if (cmd_byte == 'b')
+			{
+				usart_putc('r');
+			}
 			//Command 'p' - Pivot
 			if (cmd_byte == 'p')
 			{

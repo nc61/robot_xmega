@@ -64,14 +64,17 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
 {
 	uint16_t set_point = floor(TCD1.PER*((float)duty_cycle/100) + .5);
 	
+	//Left motor
 	if (motor == 'l')
 	{
+		//Forward
 		if (dir == 'f')
 		{
 			PORTB.OUTSET = PIN0_bm;
 			PORTB.OUTCLR = PIN1_bm;
 			left_motor_set_point = set_point;
 		}
+		//Backward
 		else if (dir == 'b')
 		{
 			PORTB.OUTSET = PIN1_bm;
@@ -81,14 +84,17 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
 		else left_motor_set_point = 0;
 	}
 	
+	//Right motor
 	else if (motor == 'r')
 	{
+		//Forward
 		if (dir == 'f')
 		{
 			PORTB.OUTSET = PIN2_bm;
 			PORTB.OUTCLR = PIN3_bm;
 			right_motor_set_point = set_point;
 		}
+		//Backward
 		else if (dir == 'b')
 		{
 			PORTB.OUTSET = PIN3_bm;
@@ -98,8 +104,10 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
 		else right_motor_set_point = 0;
 	}
 	
+	//Both motors
 	else if (motor == 'b')
 	{
+		//Forward
 		if (dir == 'f')
 		{
 			PORTB.OUTSET = PIN0_bm | PIN2_bm;
@@ -107,6 +115,7 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
 			right_motor_set_point = set_point;
 			left_motor_set_point = set_point;
 		}
+		//Backward
 		else if (dir == 'b')
 		{
 			PORTB.OUTSET = PIN1_bm | PIN3_bm;
@@ -116,6 +125,7 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
 		}
 		else
 		{
+			//Error. Stop motors.
 			right_motor_set_point = 0;
 			left_motor_set_point = 0;
 		}
@@ -148,6 +158,8 @@ void pivot_left(uint8_t duty_cycle)
 
 void stop_motors()
 {
+	//Not shown: If 'y' parameter passed, xmega will 
+	//	send serial byte when motors stop moving
 	left_motor_set_point = 0;
 	right_motor_set_point = 0;
 }
