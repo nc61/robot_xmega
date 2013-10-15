@@ -27,6 +27,8 @@ int main(void)
 {
 	clock_init();
 	usart_test_init();
+	
+	//Just to make sure the board is alive
 	PORTB.DIRSET = 0x0F;
 	PORTB.OUTSET = 0x01;
 	sei();
@@ -39,7 +41,7 @@ int main(void)
 ISR(USARTC0_RXC_vect)
 {
 	//Output lowest nibble to port B
-	PORTB.OUTSET = (data & 0x0F);
+	PORTB.OUT = (data & 0x0F);
 	data = USARTC0.DATA;
 	data = data + 1;
 	USARTC0.DATA = data;
