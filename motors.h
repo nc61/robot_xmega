@@ -11,16 +11,16 @@
 
 
 //This function is used when the user wants to control an individual motor
-void set_motor(char motor, uint8_t duty_cycle, uint8_t dir);
+void set_motor(char motor, uint8_t duty_cycle, uint8_t dir, uint8_t immediate);
 
 //This function initializes a counter for PWM and a counter for acceleration
 void TC_init();
 
 //Sets the right motor forward and left motor backward at equal duty cycle
-void pivot_left(uint8_t duty_cycle);
+void pivot_left(uint8_t duty_cycle, uint8_t immediate);
 
 //Sets the left motor forward and right motor backward at equal duty cycle
-void pivot_right(uint8_t duty_cycle);
+void pivot_right(uint8_t duty_cycle, uint8_t immediate);
 
 //Stops the motors
 void stop_motors();

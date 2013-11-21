@@ -14,6 +14,8 @@
 //global variables from motors.c
 extern uint8_t acceleration;
 extern uint8_t deceleration;
+extern uint16_t right_motor_set_point;
+extern uint16_t left_motor_set_point;
 extern char stop_reply;
 
 int main(void)
@@ -35,7 +37,7 @@ int main(void)
 			PORTB.OUT = (cmd_byte & 0x0F);
 			
 			//Command 'd' - Debug
-			if (cmd_byte == 'b')
+			if (cmd_byte == '!')
 			{
 				usart_putc('r');
 			}
@@ -44,11 +46,14 @@ int main(void)
 			{
 				uint8_t direction = usart_getc();
 				uint8_t duty_cycle = usart_getc();
+				uint8_t immediate = usart_getc();
+				uint8_t imm = 0;
+				if (immediate == 'y') imm = 1;
 				if (direction == 'l'){
-					pivot_left(duty_cycle);
+					pivot_left(duty_cycle, imm);
 				}
 				else if (direction == 'r'){
-					pivot_right(duty_cycle);
+					pivot_right(duty_cycle, imm);
 				}
 			}
 			
@@ -58,7 +63,10 @@ int main(void)
 				char motor = usart_getc();
 				uint8_t direction = usart_getc();
 				uint8_t duty_cycle = usart_getc();
-				set_motor(motor, duty_cycle, direction);
+				uint8_t immediate = usart_getc();
+				uint8_t imm;
+				if (immediate == 'y') imm = 1;
+				set_motor(motor, duty_cycle, direction, imm);
 			}
 			
 			//Command 's' - Stop motors
@@ -88,6 +96,14 @@ int main(void)
 					deceleration = dec;
 				}
 			}
+			else if (cmd_byte == 'i')
+			{
+				right_motor_set_point = 0;
+				left_motor_set_point = 0;
+				TCD1.CCA = 0;
+				TCD1.CCB = 0;
+			}
+			else if (cmd_byte)
 		//Reset to prepare for next command
 		cmd_byte = 0;	
 		}

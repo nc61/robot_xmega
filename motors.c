@@ -60,7 +60,7 @@ void TC_init()
 	TCE0.CTRLA = TC_CLKSEL_DIV64_gc;
 }
 
-void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
+void set_motor(char motor, uint8_t duty_cycle, uint8_t dir, uint8_t immediate)
 {
 	uint16_t set_point = floor(TCD1.PER*((float)duty_cycle/100) + .5);
 	
@@ -108,31 +108,37 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir)
 	else if (motor == 'b')
 	{
 		//Forward
-		if (dir == 'f')
+		if (dir == 'f') 
 		{
 			PORTB.OUTSET = PIN0_bm | PIN2_bm;
 			PORTB.OUTCLR = PIN1_bm | PIN3_bm;
 			right_motor_set_point = set_point;
 			left_motor_set_point = set_point;
-		}
-		//Backward
-		else if (dir == 'b')
-		{
+			
+		} 
+		//backward
+		else if (dir == 'b') 
+		{ 
 			PORTB.OUTSET = PIN1_bm | PIN3_bm;
 			PORTB.OUTCLR = PIN0_bm | PIN2_bm;
 			right_motor_set_point = set_point;
 			left_motor_set_point = set_point;
-		}
-		else
+		} 
+		//Error. Stop motors.
+		else 
 		{
-			//Error. Stop motors.
 			right_motor_set_point = 0;
 			left_motor_set_point = 0;
+		}
+		if (immediate)
+		{
+			TCD1.CCA = set_point;
+			TCD1.CCB = set_point;
 		}
 	}
 }
 
-void pivot_right(uint8_t duty_cycle)
+void pivot_right(uint8_t duty_cycle, uint8_t immediate)
 {
 	uint16_t set_point = floor(TCD1.PER*((float)duty_cycle/100) + .5);
 	
@@ -142,9 +148,15 @@ void pivot_right(uint8_t duty_cycle)
 	
 	left_motor_set_point = set_point;
 	right_motor_set_point = set_point;
+	
+	if (immediate)
+	{
+		TCD1.CCA = set_point;
+		TCD1.CCB = set_point;
+	}
 }
 
-void pivot_left(uint8_t duty_cycle)
+void pivot_left(uint8_t duty_cycle, uint8_t immediate)
 {
 	uint16_t set_point = floor(TCD1.PER*((float)duty_cycle/100) + .5);
 	
@@ -154,6 +166,12 @@ void pivot_left(uint8_t duty_cycle)
 	
 	left_motor_set_point = set_point;
 	right_motor_set_point = set_point;
+	
+	if (immediate)
+	{
+		TCD1.CCA = set_point;
+		TCD1.CCB = set_point;
+	}
 }
 
 void stop_motors()
@@ -194,7 +212,8 @@ ISR(TCE0_OVF_vect)
 		if (stop_reply == 'y'){
 			if (!(TCD1.CCA || TCD1.CCB))
 			{
-				usart_putc(0xAA);
+				//s means motors are stopped
+				usart_putc('s');
 				stop_reply = 'n';
 			}
 		}

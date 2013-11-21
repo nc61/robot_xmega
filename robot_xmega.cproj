@@ -5,7 +5,7 @@
     <ProjectVersion>6.1</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
     <ProjectGuid>{323dfa28-0df3-4bb2-aed7-17a559cc257d}</ProjectGuid>
-    <avrdevice>ATxmega128A1U</avrdevice>
+    <avrdevice>ATxmega128A4U</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
     <Language>C</Language>
@@ -18,7 +18,8 @@
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
-    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <OverrideVtorValue>
+    </OverrideVtorValue>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <ProgFlashFromRam>true</ProgFlashFromRam>
     <RamSnippetAddress>0x20000000</RamSnippetAddress>
@@ -37,8 +38,9 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
-    <avrtoolinterface>JTAG</avrtoolinterface>
-    <avrtool>com.atmel.avrdbg.tool.avrdragon</avrtool>
+    <avrtoolinterface>
+    </avrtoolinterface>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType>com.atmel.avrdbg.tool.simulator</ToolType>
       <ToolName>Simulator</ToolName>
@@ -48,7 +50,7 @@
       </StimuliFile>
       <Channel>
         <host>127.0.0.1</host>
-        <port>51861</port>
+        <port>53268</port>
         <ssl>False</ssl>
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
@@ -60,13 +62,13 @@
       </StimuliFile>
       <Channel>
         <host>127.0.0.1</host>
-        <port>51861</port>
+        <port>53268</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
         <InterfaceName>JTAG</InterfaceName>
         <InterfaceProperties>
-          <JtagDbgClock>0</JtagDbgClock>
+          <JtagDbgClock>200000</JtagDbgClock>
           <SwdClock>249000</SwdClock>
           <JtagProgClock>200000</JtagProgClock>
           <IspClock>150000</IspClock>
@@ -143,18 +145,21 @@
     <Compile Include="clock.h">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="main.c">
+    <None Include="usart_test.c">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="motors.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="motors.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="motor_test.c">
+    <None Include="motor_test.c">
       <SubType>compile</SubType>
-    </Compile>
+    </None>
     <Compile Include="robot_xmega.h">
       <SubType>compile</SubType>
     </Compile>
