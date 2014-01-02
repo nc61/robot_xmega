@@ -81,7 +81,18 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir, uint8_t immediate)
 			PORTB.OUTCLR = PIN0_bm;
 			left_motor_set_point = set_point;
 		}
+		//None, lock motor
+		else if (dir == 'n')
+		{
+			PORTB.OUTCLR = PIN1_bm;
+			PORTB.OUTCLR = PIN0_bm;
+		}
 		else left_motor_set_point = 0;
+		
+		if (immediate)
+		{
+			TCD1.CCA = left_motor_set_point;
+		}
 	}
 	
 	//Right motor
@@ -101,7 +112,18 @@ void set_motor(char motor, uint8_t duty_cycle, uint8_t dir, uint8_t immediate)
 			PORTB.OUTCLR = PIN2_bm;
 			right_motor_set_point = set_point;
 		}
-		else right_motor_set_point = 0;
+		//None, lock motor
+		else if (dir == 'n') 
+		{
+			PORTB.OUTCLR = PIN3_bm;
+			PORTB.OUTCLR = PIN2_bm;
+		}
+		else left_motor_set_point = 0;
+		
+		if (immediate)
+		{
+			TCD1.CCB = right_motor_set_point;
+		}
 	}
 	
 	//Both motors

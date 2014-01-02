@@ -103,7 +103,16 @@ int main(void)
 				TCD1.CCA = 0;
 				TCD1.CCB = 0;
 			}
-			else if (cmd_byte)
+			else if (cmd_byte == 'c')
+			{
+				uint8_t left_duty_cycle = usart_getc();
+				uint8_t left_direction = usart_getc();
+				uint8_t right_duty_cycle = usart_getc();
+				uint8_t right_direction = usart_getc();
+				
+				set_motor('l', left_duty_cycle, left_direction, 1);
+				set_motor('r', right_duty_cycle, right_direction, 1);
+			}
 		//Reset to prepare for next command
 		cmd_byte = 0;	
 		}
